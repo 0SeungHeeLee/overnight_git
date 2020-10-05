@@ -3,4 +3,5 @@
 int main()
 {
 	printf("TEST");
+	printf("\nT+PAZOLITE!!!");
 }
