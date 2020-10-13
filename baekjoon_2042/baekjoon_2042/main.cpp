@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-/*
+
 #define TRUE 1
 #define FALSE 0
 #define NOT_EXIST -123456
@@ -146,9 +146,8 @@ void task_getValue(int loc, long long* res, cint st, cint ed, cint sV, val* dN)
 		task_getValue(dN[loc].rt, res, dN[dN[loc].rt].st, ed, sV, dN);
 	}// [---(____][___)------]
 }
-*/
 
-
+/*
 void main() {
 	int arrsize;
 	int mod;
@@ -215,3 +214,4 @@ void main() {
 
 	return;
 }
+*/
