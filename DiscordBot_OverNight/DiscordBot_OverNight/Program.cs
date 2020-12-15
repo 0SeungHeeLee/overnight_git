@@ -35,7 +35,7 @@ namespace DiscordBot_OverNight
             commands.Log += OnClientLogReceived;
 
             //토큰 사용 로그인 -> 이벤트 수신 시작
-            await client.LoginAsync(TokenType.Bot, "Nzg4MzgzOTE5OTA0MzkxMTkz.X9itvQ.YAIb0kvOK3mRlFly8NKK44hoO8s");
+            await client.LoginAsync(TokenType.Bot, "Token");
             await client.StartAsync();
 
             client.MessageReceived += OnClientMessage;      //메세지 수신 처리
