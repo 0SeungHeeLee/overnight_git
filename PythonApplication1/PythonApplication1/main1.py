@@ -1,27 +1,61 @@
-import numpy as np
-import matplotlib.pyplot as plt
-import PIL.Image as pimg
+##신경망-신호전달 연습
+#import numpy as np
 
-img_main = pimg.open('example_img_v2.jpg')
+#def init_network():
+#    db_network = {}
+#    db_network['W1'] = np.array([[0.1,0.3,0.5],[0.2,0.4,0.6]])
+#    db_network['W2'] = np.array([[0.1,0.4],[0.2,0.5],[0.3,0.6]])
+#    db_network['W3'] = np.array([[0.1,0.3],[0.2,0.4]])
+#    db_network['b1'] = np.array([0.1,0.2,0.3])
+#    db_network['b2'] = np.array([0.1,0.2])
+#    db_network['b3'] = np.array([0.1,0.2])
 
-#이미지 데이터 --Convert--> numpy array
-pix_main = np.array(img_main)
-pix_main = (1/255) * pix_main           #색 관련 보정
-pix_size = np.array(pix_main.shape)
-pix_sub = np.empty(pix_size)
+#    return db_network
 
-#회색 비율(일부 조정가능, R 0.2126 G 0.7152 B 0.0722)
-for i in range(pix_size[0]):
-    for j in range(pix_size[1]):
-        pix_gray = 0.2126 * pix_main[i][j][0] + 0.7152 * pix_main[i][j][1] + 0.0722 * pix_main[i][j][2]
-        pix_sub[i, j] = (pix_gray, pix_gray, pix_gray)
+#def forward(db_network, x):
+#    W1,W2,W3 = db_network['W1'],db_network['W2'],db_network['W3']
+#    b1,b2,b3 = db_network['b1'],db_network['b2'],db_network['b3']
 
-plt.subplot(141)       
-plt.imshow(pix_sub)  
-plt.axis('off')         
-plt.title('Convert to gray', fontsize = 7)
+#    a1 = np.dot(x, W1) + b1
+#    z1 = sigmoid(a1)
+#    a2 = np.dot(z1, W2) + b2
+#    z2 = sigmoid(a2)
+#    a2 = np.dot(z2, W3) + b3
+#    y = identity_function(a3)
 
-plt.show()
+#    return y
+
+#db_network = init_network()
+#x = np.array([1.0,0.5])
+#y = forward(db_network, x)
+#print(y)
+
+
+#흑백전환
+#import numpy as np
+#import matplotlib.pyplot as plt
+#import PIL.Image as pimg
+
+#img_main = pimg.open('example_img_v2.jpg')
+
+##이미지 데이터 --Convert--> numpy array
+#pix_main = np.array(img_main)
+#pix_main = (1/255) * pix_main           #색 관련 보정
+#pix_size = np.array(pix_main.shape)
+#pix_sub = np.empty(pix_size)
+
+##회색 비율(일부 조정가능, R 0.2126 G 0.7152 B 0.0722)
+#for i in range(pix_size[0]):
+#    for j in range(pix_size[1]):
+#        pix_gray = 0.2126 * pix_main[i][j][0] + 0.7152 * pix_main[i][j][1] + 0.0722 * pix_main[i][j][2]
+#        pix_sub[i, j] = (pix_gray, pix_gray, pix_gray)
+
+#plt.subplot(141)       
+#plt.imshow(pix_sub)  
+#plt.axis('off')         
+#plt.title('Convert to gray', fontsize = 7)
+
+#plt.show()
 
 
 ##이미지 합성
