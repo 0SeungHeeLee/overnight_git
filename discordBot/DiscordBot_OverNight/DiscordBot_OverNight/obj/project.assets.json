@@ -1463,11 +1463,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\github_overnight\\overnight_git\\DiscordBot_OverNight\\DiscordBot_OverNight\\DiscordBot_OverNight.csproj",
+      "projectUniqueName": "D:\\github_overnight\\overnight_git\\discordBot\\DiscordBot_OverNight\\DiscordBot_OverNight\\DiscordBot_OverNight.csproj",
       "projectName": "DiscordBot_OverNight",
-      "projectPath": "D:\\github_overnight\\overnight_git\\DiscordBot_OverNight\\DiscordBot_OverNight\\DiscordBot_OverNight.csproj",
+      "projectPath": "D:\\github_overnight\\overnight_git\\discordBot\\DiscordBot_OverNight\\DiscordBot_OverNight\\DiscordBot_OverNight.csproj",
       "packagesPath": "C:\\Users\\hidde\\.nuget\\packages\\",
-      "outputPath": "D:\\github_overnight\\overnight_git\\DiscordBot_OverNight\\DiscordBot_OverNight\\obj\\",
+      "outputPath": "D:\\github_overnight\\overnight_git\\discordBot\\DiscordBot_OverNight\\DiscordBot_OverNight\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\"

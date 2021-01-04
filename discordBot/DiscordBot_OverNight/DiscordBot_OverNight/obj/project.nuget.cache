@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "c0as9m/cuL+Uq1esvKVd86HtG/RxwXbsaD9+gs1Bz4JYJl6uQOg9ummQ60kMtctHlxivWpPMqOf9Fl90ndSwaQ==",
+  "dgSpecHash": "DAV+/bTCcbaF9qhNN9dmk4V6jt4NL4XjrG4Bf/j35idwQl33nTChD5LRo0DXx+saje9JYcxZOAduKZmYXbXWng==",
   "success": true,
-  "projectFilePath": "D:\\github_overnight\\overnight_git\\DiscordBot_OverNight\\DiscordBot_OverNight\\DiscordBot_OverNight.csproj",
+  "projectFilePath": "D:\\github_overnight\\overnight_git\\discordBot\\DiscordBot_OverNight\\DiscordBot_OverNight\\DiscordBot_OverNight.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\hidde\\.nuget\\packages\\discord.net\\2.2.0\\discord.net.2.2.0.nupkg.sha512",
     "C:\\Users\\hidde\\.nuget\\packages\\discord.net.commands\\2.2.0\\discord.net.commands.2.2.0.nupkg.sha512",

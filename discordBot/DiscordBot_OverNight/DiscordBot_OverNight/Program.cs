@@ -62,7 +62,7 @@ namespace DiscordBot_OverNight
             await context.Channel.SendMessageAsync("Receive command: " + message.Content);
             */
 
-            if (message.Content == "!무작위")
+            if (message.Content == "!무작위숫자")
             {
                 Random rand_tmpInt = new Random();
                 string rand_tmpStr = rand_tmpInt.Next(1, 10).ToString();
@@ -78,5 +78,8 @@ namespace DiscordBot_OverNight
             Console.WriteLine(msg.ToString());  //로그 출력
             return Task.CompletedTask;
         }
+
+        public Task GetTaskRandom()
+
     }
 }
