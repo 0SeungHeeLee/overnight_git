@@ -1,3 +1,115 @@
+#10998
+a,b=map(int,input().split())
+print(a*b)
+ 
+##10809
+#a=input()
+#b=[-1]*26
+#for i in range(len(a)):
+#    if b[ord(a[i])-97]==-1:b[ord(a[i])-97]=i
+#for i in range(26): print(b[i],end=' ')
+
+##10172
+#print("|\\_/|")
+#print("|q p|   /}")
+#print("( 0 )\"\"\"\\")
+#print("|\"^\"`    |")
+#print("||_/=\\\\__|")
+
+##3052
+#a=[]
+#b=[]
+#for i in range(10):a.append(int(input()))
+#for i in range(10):
+#    k=a[i]%42
+#    l=False
+#    for j in range(len(b)):
+#        if b[j]==k:l=True
+#    if l==False:
+#        b.append(k)
+#print(len(b))
+
+##2908
+#a,b=map(str,input().split())
+#a=int(a[::-1])
+#b=int(b[::-1])
+#if a>b:print(a)
+#else:print(b)
+
+##2884
+#a,b=map(int,input().split())
+#b-=45
+#if b<0:
+#    b+=60
+#    a-=1
+#if a<0:
+#    a+=24
+#print(str(a)+' '+str(b))
+
+##2753
+#a=int(input())
+#b=False
+#if a%4==0 and a%100!=0:b=True
+#if a%400==0:b=True
+#if b==True:print('1')
+#else:print('0')
+
+##2742
+#a=int(input())
+#for i in range(a,0,-1):print(i)
+
+##2741
+#a=int(input())
+#for i in range(1,a+1):print(i)
+
+##2577
+#a=[0]*10
+#b=[]
+#for i in range(3):b.append(int(input()))
+#s=b[0]*b[1]*b[2]
+#while s>0:
+#    a[s%10]+=1
+#    s=int(s/10)
+#for i in range(10):print(a[i])
+
+##2475
+#a=list(map(int,input().split()))
+#for i in range(5):a[i]*=a[i]
+#print(sum(a)%10)
+
+##2439
+#n=int(input())
+#for i in range(1,n+1):
+#    for j in range(n-i):print(' ',end='')
+#    for j in range(i):print('*',end='')
+#    print()
+
+##1546
+#n=int(input())
+#a=list(map(float, input().split()))
+#m=max(a)
+#for i in range(len(a)):
+#    a[i]=a[i]/m*100
+#print(sum(a)/len(a))
+
+##1157
+#import sys
+#a=[0]*26
+#s=input()
+#for i in range(len(s)):
+#    k=ord(s[i])
+#    if k>=97:a[k-97]+=1
+#    else:a[k-65]+=1
+#m=max(a)
+#c=0
+#for i in range(26):
+#    if a[i]==m:c+=1
+#    if c>=2:
+#        print('?')
+#        sys.exit()
+#print(chr(65+a.index(max(a))))
+
+
 ##1152
 #a=input()
 #k=a.count(' ')+1
