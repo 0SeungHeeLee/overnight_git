@@ -1,6 +1,17 @@
-#10998
-a,b=map(int,input().split())
-print(a*b)
+n=int(input())
+a=[]
+for i in range(1,n+1):a.append(i)
+lim=n
+while lim>1:
+    a.pop(0)
+    lim-=1
+    tmp=a.pop(0)
+    a.append(tmp)
+print(a[1])
+
+##10998
+#a,b=map(int,input().split())
+#print(a*b)
  
 ##10809
 #a=input()
