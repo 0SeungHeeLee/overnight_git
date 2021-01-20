@@ -1,19 +1,80 @@
-#1654
-k,n=map(int,input().split())
-arr=[]
-chk=[]
-for i in range(k):arr.append(int(input()))
-arr.sort()
-st=1
-ed=arr[k-1]
-while st<=ed:
-    md=int((st+ed)/2)
-    cnt=0
-    for i in range(k):
-        cnt+=int(arr[i]/md)
-    if cnt<n:ed=md-1
-    else:st=md+1
-print(ed)
+# #1929
+# n,k=map(int,input().split())
+# a=[True]*(k+1)
+# p=[2]
+# a[1]=False
+# for i in range(4,k,2):a[i]=False
+# cnt=3
+# while cnt<=k:
+#     if a[cnt]==False:
+#         cnt+=2
+#         continue
+#     p.append(cnt)
+#     for i in range(cnt*2,k+1,cnt):a[i]=False
+#     cnt+=2
+# cnt=0
+# while p[cnt]<n:cnt+=1
+# for i in range(cnt,len(p)):print(p[i])
+
+# n,k=map(int,input().split())
+# cnt=3
+# arr=[2]
+# ans_cnt=0
+# def find_min(arr,st,ed):
+#     global ans_cnt
+#     if st>ed:return
+#     if st%2==0:st+=1
+#     while st<=ed:
+#         chk=False
+#         for i in range(1,len(arr)):
+#             if arr[i]*2>st:break
+#             if st%arr[i]==0:
+#                 chk=True
+#                 break
+#         if chk==False:arr.append(st)
+#         st+=2
+#     if ans_cnt==0:ans_cnt=len(arr)
+# find_min(arr,3,n)
+# find_min(arr,n,k)
+# for i in range(ans_cnt,len(arr)):print(arr[i])
+
+# #1874
+# n=int(input())
+# ans=[]
+# stk=[]
+# inf=[]
+# for i in range(n):inf.append(int(input()))
+# cnt_inf=0
+# cnt_stk=0
+# while cnt_stk<n:
+#     cnt_stk+=1
+#     stk.append(cnt_stk)
+#     ans.append('+')
+#     if cnt_stk==inf[cnt_inf]:
+#         while len(stk)>0 and stk[len(stk)-1]==inf[cnt_inf]:
+#             cnt_inf+=1
+#             ans.append('-')
+#             stk.pop()
+# if cnt_inf==n:
+#     for i in range(len(ans)):print(ans[i])
+# else:print('NO')  
+
+# #1654
+# k,n=map(int,input().split())
+# arr=[]
+# chk=[]
+# for i in range(k):arr.append(int(input()))
+# arr.sort()
+# st=1
+# ed=arr[k-1]
+# while st<=ed:
+#     md=int((st+ed)/2)
+#     cnt=0
+#     for i in range(k):
+#         cnt+=int(arr[i]/md)
+#     if cnt<n:ed=md-1
+#     else:st=md+1
+# print(ed)
     
 # #1436
 # order=int(input())
