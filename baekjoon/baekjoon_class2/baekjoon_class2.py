@@ -1,3 +1,260 @@
+#18111
+#remove=2 / build=1
+n,m,b=map(int,input().split())
+t=[]
+k=[]
+for _ in range(n):t.append(list(map(int,input().split())))
+for i in t:k+=i
+n*=m
+minL=min(k)
+maxL=max(k)
+ansT=99999999
+ansL=-1
+for tL in range(maxL,minL-1,-1):
+    val_time=0
+    val_block=b
+    for i in range(n):
+        tmp=k[i]-tL
+        if tmp>0:
+            val_time+=tmp*2
+            val_block+=tmp
+        else:
+            val_time+=tmp*-1
+            val_block+=tmp
+    if val_block<0:continue
+    if ansT>val_time:
+        ansT=val_time
+        ansL=tL
+print(ansT,ansL)
+
+    
+
+# #15829
+# n=int(input())
+# s=input()
+# k=[]
+# for i in range(n):k.append(ord(s[i])-96)
+# t=0
+# for i in range(n):t+=k[i]*(31**i)
+# t%=1234567891
+# print(t)
+
+# #11651
+# n=int(input())
+# k=[]
+# for i in range(n):k.append(list(map(int,input().split())))
+# k.sort(key=lambda x:x[0])
+# k.sort(key=lambda x:x[1])
+# for i in range(n):print(k[i][0],k[i][1])
+
+# #10989
+# import sys
+# n=int(sys.stdin.readline())
+# cnt=[0]*10001
+# for i in range(n):cnt[int(sys.stdin.readline())]+=1
+# for i in range(10001):
+#     for j in range(cnt[i]):print(i)
+
+# #10773
+# k=int(input())
+# a=[]
+# for i in range(k):
+#     t=int(input())
+#     if t>0:a.append(t)
+#     else:a.pop()
+# print(sum(a))
+
+# #7568
+# val_size=int(input())
+# arr=[]
+# ans=[1]*val_size
+# for i in range(val_size):arr.append(list(map(int,input().split())))
+# for i in range(val_size):
+#     for j in range(i+1,val_size):
+#         if arr[i][0]>arr[j][0] and arr[i][1]>arr[j][1]:
+#             ans[j]+=1
+#         elif arr[i][0]<arr[j][0] and arr[i][1]<arr[j][1]:
+#             ans[i]+=1
+# for i in range(val_size):print(ans[i],end=' ')
+
+# #4949
+# while True:
+#     s=input()
+#     if len(s)==1 and s=='.':break
+#     last=[]
+#     chk=True
+#     for i in range(len(s)):
+#         if s[i]=='[' or s[i]=='(':
+#             last.append(s[i])
+#         elif s[i]==']':
+#             if len(last)>0 and last.pop()=='[':continue
+#             chk=False
+#             break
+#         elif s[i]==')':
+#             if len(last)>0 and last.pop()=='(':continue
+#             chk=False
+#             break
+#     if len(last)==0 and chk==True:print('yes')
+#     else:print('no')
+
+# #4153
+# while True:
+#     a=list(map(int,input().split()))
+#     if sum(a)==0:break
+#     a.sort()
+#     if a[0]**2+a[1]**2==a[2]**2:print('right')
+#     else:print('wrong')
+
+# #2869
+# import math
+# a,b,v=map(int,input().split())
+# v-=a
+# print(math.ceil(v/(a-b))+1)
+
+# #2839
+# n=int(input())
+# b3=0
+# b5=int(n/5)
+# def returnWeigh(b5,b3):
+#     return b5*5+b3*3
+# cnt=returnWeigh(b5,b3)
+# while cnt!=n:
+#     if b5<0:break
+#     while cnt<n:
+#         b3+=1
+#         cnt+=3
+#     if cnt>n:
+#         b5-=1
+#         b3=0
+#         cnt=returnWeigh(b5,b3)
+# if b5>=0:print(b3+b5)
+# else:print(-1)
+
+# #2805
+# val_tree,val_meter=map(int,input().split())
+# inf_tree=list(map(int,input().split()))
+# inf_tree.sort()
+# st=0
+# ed=max(inf_tree)
+# while st<=ed:
+#     sumM=0
+#     md=int((st+ed)/2)
+#     for i in range(val_tree):
+#         tmp=inf_tree[i]-md
+#         if tmp>0:sumM+=tmp
+#     if sumM<val_meter:ed=md-1
+#     else:st=md+1
+# print(ed)
+
+# #2275
+# val_case=int(input())
+# for tn in range(val_case):
+#     k=int(input())
+#     n=int(input())
+#     inf=[[0 for j in range(n)] for i in range(k+1)]
+#     for i in range(n):inf[0][i]=i+1
+#     for i in range(k+1):inf[i][0]=1
+
+#     for i in range(1,k+1):
+#         sumV=1
+#         for j in range(1,n):
+#             sumV+=inf[i-1][j]
+#             inf[i][j]=sumV
+#     print(inf[k][n-1])
+
+# #2292
+# k=int(input())
+# sumV=1
+# addV=6
+# cnt=1
+# while sumV<k:
+#     sumV+=addV*cnt
+#     cnt+=1
+# print(cnt)
+
+# #2108
+# val_size=int(input())
+# db_num=[]
+# db_cnt=[0]*val_size
+# for i in range(val_size):db_num.append(int(input()))
+# db_num.sort()
+# cnt=1
+# tmp=db_num[0]
+# db_cnt[0]=1
+# for i in range(1,val_size):
+#     if tmp!=db_num[i]:
+#         cnt=1
+#         tmp=db_num[i]
+#     else:
+#         cnt+=1
+#     db_cnt[i]=cnt
+# cnt=-1
+# tmp=max(db_cnt)
+# for i in range(val_size):
+#     if db_cnt[i]==tmp:
+#         if cnt==-1:cnt=i
+#         else:
+#             cnt=i
+#             break
+
+# print(round(sum(db_num)/val_size))
+# print(db_num[int(val_size/2)])
+# print(db_num[cnt])
+# print(db_num[val_size-1]-db_num[0])
+
+# #1966
+# def pop_and_push(arr):
+#     tmp=arr.pop(0)
+#     arr.append(tmp)
+
+# val_case=int(input())
+# for i in range(val_case):
+#     val_size,val_idx=map(int,input().split())
+#     db_score=list(map(int,input().split()))
+    
+#     db_idx=list(range(val_size))
+#     sv_idx=db_score[val_idx]
+#     sv_max=max(db_score)
+#     cnt=1
+
+#     while sv_max>sv_idx:
+#         while db_score[0]!=sv_max:
+#             pop_and_push(db_score)
+#             pop_and_push(db_idx)
+#         db_score.pop(0)
+#         db_idx.pop(0)
+#         cnt+=1
+#         sv_max=max(db_score)
+#     for i in range(len(db_score)):
+#         if db_idx[i]!=val_idx:
+#             if db_score[i]==sv_idx:cnt+=1
+#         else:break
+#     print(cnt)
+
+# #2231
+# import sys
+# val_find=int(input())
+# val_len=len(str(val_find))
+# def find_val(val):
+#     sumC=val
+#     sumV=0
+#     while len(str(sumC))>1:
+#         sumV+=sumC%10
+#         sumC=int(sumC/10)
+#     return sumV+sumC+val
+# cnt=0
+# while True:
+#     st=find_val(cnt)
+#     ed=st+18
+#     if val_find<st:break
+#     if val_find>=st or val_find<=ed:
+#         for i in range(cnt,cnt+10):
+#             if find_val(i)==val_find:
+#                 print(i)
+#                 sys.exit(0)
+#     cnt+=10
+# print(0)
+
 # #1929
 # n,k=map(int,input().split())
 # a=[True]*(k+1)

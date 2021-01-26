@@ -1,3 +1,95 @@
+# map_size,dot_size=map(int,input().split())
+# dot_infR=[0]*(map_size+1)
+# dot_infC=[0]*(map_size+1)
+# dot_scoreR=[0]*(map_size+1)
+# dot_scoreC=[0]*(map_size+1)
+# for i in range(dot_size):
+#     a,b=map(int,input().split())
+#     dot_infR[a]+=1
+#     dot_infC[b]+=1
+
+# for i in range(1,map_size+1):
+#     for j in range(1,map_size+1):
+#         dot_scoreR[i]+=abs(i-j)*dot_infR[j]
+#         dot_scoreC[i]+=abs(i-j)*dot_infC[j]
+
+# dot_scoreR[0]=999999999
+# dot_scoreC[0]=999999999
+# print(min(dot_scoreR)+min(dot_scoreC))
+
+
+# #15683
+# import sys
+# sys.setrecursionlimit(100000)
+# size_row,size_col=map(int,input().split())
+# map_inf=[]
+# cam_inf=[]
+# val_min=65
+# for i in range(size_row):map_inf.append(list(map(int,input().split())))
+
+# def cal_count(arr,key):
+#     global size_row
+#     global size_col
+#     cnt=0
+#     for i in range(size_row):
+#         for j in range(size_col):
+#             if arr[i][j]==key:cnt+=1
+#     return cnt
+
+# for i in range(size_row):
+#     for j in range(size_col):
+#         if map_inf[i][j]>0 and map_inf[i][j]<6:cam_inf.append([i,j,map_inf[i][j]])
+# val_spc=cal_count(map_inf,0)
+# dir_inf=[[1,0],[0,-1],[-1,0],[0,1]]
+# dir_mod=[]
+# dir_mod.append([[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]])
+# dir_mod.append([[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]])
+# dir_mod.append([[1,0,1,0],[0,1,0,1],[1,0,1,0],[0,1,0,1]])
+# dir_mod.append([[1,1,0,0],[0,1,1,0],[0,0,1,1],[1,0,0,1]])
+# dir_mod.append([[1,1,1,0],[0,1,1,1],[1,0,1,1],[1,1,0,1]])
+# dir_mod.append([[1,1,1,1],[1,1,1,1],[1,1,1,1],[1,1,1,1]])
+# dir_cam=[0]*8
+
+# def task_find(dp):
+#     global map_inf
+#     global cam_inf
+#     global dir_inf
+#     global dir_mod
+#     global dir_cam
+#     global val_min
+#     global val_spc
+#     global size_row
+#     global size_col
+
+#     if dp==len(cam_inf):
+#         map_chk=[[False]*size_col for _ in range(size_row)]
+#         for i in range(len(cam_inf)):
+#             lR=cam_inf[i][0]
+#             lC=cam_inf[i][1]
+#             cV=map_inf[lR][lC]  #캠 종류
+#             cD=dir_cam[i]       #캠 방향
+#             for j in range(4):
+#                 if dir_mod[cV][cD][j]==True:
+#                     cnt=0
+#                     while True:
+#                         cnt+=1
+#                         mR=lR+cnt*dir_inf[j][0]
+#                         mC=lC+cnt*dir_inf[j][1]
+#                         if mR<0 or mC<0 or mR>=size_row or mC>=size_col:break
+#                         if map_inf[mR][mC]==6:break
+#                         if map_inf[mR][mC]>0:continue
+#                         map_chk[mR][mC]=True;
+#         tmp_min=val_spc-cal_count(map_chk,True)
+#         if val_min>tmp_min:val_min=tmp_min
+#     else:
+#         for i in range(4):
+#             dir_cam[dp]=i
+#             task_find(dp+1)
+#             if cam_inf[dp][2]==2 and i==1:break
+#             if cam_inf[dp][2]==5 and i==0:break
+# task_find(0)
+# print(val_min)
+
 # #1103(pypy3)
 # import sys
 # sys.setrecursionlimit(100000)

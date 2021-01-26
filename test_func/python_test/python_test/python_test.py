@@ -1,66 +1,88 @@
-#17142
-from itertools import combinations
-map_size,virus_active=map(int,input().split())
-map_inf=[]
-virus_inf=[]
-for i in range(map_size):
-    map_inf.append([])
-    map_inf[i]=list(map(int,input().split()))
-for i in range(map_size):
-    for j in range(map_size):
-        if map_inf[i][j]==2:
-            virus_inf.append([i,j])
+import sys
+sys.setrecursionlimit(100000)
+unit_M,build_hp,build_gn=map(int,input().split())
+unit_E=0
+turn_min=999999
 
-db_dir=[[0,1],[0,-1],[1,0],[-1,0]]
-virus_idx=[]
-for i in combinations(virus_inf,virus_active):virus_idx.append(i)
-time_min=map_size*map_size
+def turn_attackE(mine,enemy,hp):
+    return mine-enemy
 
-def task_find(map,size):
-    global time_min
-    global db_dir
+def turn_generate(enemy,hp,generate):
+    if hp>0:return enemy+generate
+    else:return enemy
 
-    ed=0
-    stair=[]
-    queue=[]
-    check=[[0 for i in range(size)] for j in range(size)]
-    for i in range(size):
-        for j in range(size):
-            if map[i][j]==3:
-                queue.append([])
-                queue[len(queue)-1].append(i)
-                queue[len(queue)-1].append(j)
-                check[i][j]=1
-                stair.append(0)
-    while len(queue)>ed:
-        for i in range(4):
-            mi=queue[ed][0]+db_dir[i][0]
-            mj=queue[ed][1]+db_dir[i][1]
-            if mi<0 or mj<0 or mi>=size or mj>=size:continue
-            if map[mi][mj]==1:continue
-            if check[mi][mj]>0:continue
-            queue.append([])
-            queue[len(queue)-1].append(mi)
-            queue[len(queue)-1].append(mj)
-            check[mi][mj]=1
-            stair.append(stair[ed]+1)
-        ed+=1
-    for i in range(size):
-        for j in range(size):
-            if map[i][j]!=1 and check[i][j]==0:return
-    cnt=ed-1
-    while cnt>=0:
-        if map[queue[cnt][0]][queue[cnt][1]]!=2:break
-        cnt-=1
-    tmp_min=stair[cnt]
-    if tmp_min<time_min:time_min=tmp_min
+def chk_win(enemy,hp):
+    if enemy==0 and hp==0:return True
+    else:return False
 
-for i in range(len(virus_idx)):
-    for j in range(len(virus_idx[0])):
-        map_inf[virus_idx[i][j][0]][virus_idx[i][j][1]]=3
-    task_find(map_inf,map_size)
-    for j in range(len(virus_idx[0])):
-        map_inf[virus_idx[i][j][0]][virus_idx[i][j][1]]=2
+def chk_lose(mine):
+    if mine<=0:return True
+    else:return False
 
-if time_min<map_size*map_size:print(time_min)
-else:print(-1)
+def chk_battle(mine,enemy):
+    while mine>0 and enemy>0:
+        mine-=enemy
+        enemy-=mine
+    if mine>enemy:return True
+    else:return False
+
+def chk_loop(mine,hp,generate):
+    if hp-mine>0 and mine<=generate:return True
+    else:return False
+
+def set_attack(mine,enemy,hp):
+    if hp<=0:
+        tBuild=0
+        tEnemy=mine
+    elif mine>=hp:
+        tBuild=hp
+        tEnemy=mine-hp
+    elif mine>=enemy:
+        tBuild=mine-enemy
+        tEnemy=enemy
+    else:
+        tBuild=mine
+        tEnemy=0
+    return tBuild,tEnemy 
+def set_dirVal(tB,tE):
+    if tB>=tE:return -1,1
+    else:return 1,-1
+def simulator(mine,enemy,hp,turn):
+    global build_gn
+    global turn_min
+
+    if chk_win(enemy,hp):
+        if turn_min>turn:turn_min=turn
+        return
+    if turn>=turn_min:return
+
+    mine=turn_attackE(mine,enemy,hp)
+    if chk_lose(mine):return
+    if chk_loop(mine,hp,build_gn):return
+    enemy=turn_generate(enemy,hp,build_gn)
+    turn+=1
+
+    attack_toBuild,attack_toEnemy=set_attack(mine,enemy,hp)
+    v_tB,v_tE=set_dirVal(attack_toBuild,attack_toEnemy)
+    while attack_toEnemy>=0 and attack_toBuild>=0:
+        if chk_battle(mine,enemy)==True:simulator(mine,enemy-attack_toEnemy,hp-attack_toBuild,turn)
+        attack_toBuild+=v_tB
+        attack_toEnemy+=v_tE
+def chk_shorter(mine,enemy,hp,turn):
+    global build_gn
+    global turn_min
+
+    if hp-mine<=0:return mine,enemy,hp,turn
+    if build_gn>=mine:
+        print(-1)
+        sys.exit()
+    dmg=mine-build_gn
+    while hp>mine:
+        hp-=dmg
+        turn+=1
+    return mine,enemy,hp,turn
+
+mine,enemy,hp,turn=chk_shorter(unit_M,unit_E,build_hp-unit_M,1)
+simulator(mine,enemy,hp,turn)
+if turn_min==999999:print(-1)
+else:print(turn_min)
