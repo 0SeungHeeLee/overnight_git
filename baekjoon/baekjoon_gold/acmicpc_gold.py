@@ -1,3 +1,264 @@
+# #1941
+# import copy
+# map_ver=[[0 for hor in range(4)] for ver in range(10)]
+# map_hor=[[0 for hor in range(10)] for ver in range(4)]
+# blk_dir=[[0,0],[0,0],[0,1],[1,0]]
+# val_score=0
+
+# def set_blkInf(cs,x,y,blk):
+#     global blk_dir
+
+#     blk.append([])
+#     blk[0].append(x)
+#     blk[0].append(y)
+#     blk.append([])
+#     blk[1].append(x+blk_dir[cs][1])
+#     blk[1].append(y+blk_dir[cs][0])
+# def cal_sumHor(x):
+#     global map_hor
+#     tmp=0
+#     for i in range(4):tmp+=map_hor[i][x]
+#     return tmp
+# def cal_blk():
+#     global map_ver
+#     global map_hor
+#     cnt_blk=0
+
+#     for i in range(6,10):
+#         for j in range(4):
+#             if map_ver[i][j]>0:cnt_blk+=1
+#             if map_hor[j][i]>0:cnt_blk+=1
+    
+#     return cnt_blk
+        
+# def chk_outRange():
+#     global map_ver
+#     global map_hor
+
+#     chkV=[sum(map_ver[5]),sum(map_ver[4])]
+#     chkH=[cal_sumHor(5),cal_sumHor(4)]
+#     if chkV[1]>0:cntV=2
+#     elif chkV[0]>0:cntV=1
+#     else:cntV=0
+#     if chkH[1]>0:cntH=2
+#     elif chkH[0]>0:cntH=1
+#     else:cntH=0
+
+#     if cntV>0:
+#         for i in range(9-cntV,9-cntV-6,-1):
+#             for j in range(4):map_ver[i+cntV][j]=map_ver[i][j]
+#     if cntH>0:
+#         for i in range(9-cntH,9-cntH-6,-1):
+#             for j in range(4):map_hor[j][i+cntH]=map_hor[j][i]
+
+# def chk_getScore():
+#     global map_ver
+#     global map_hor
+#     global val_score
+    
+#     while True:
+#         chk_get=False
+#         for i in range(9,5,-1):
+#             for j in range(4):
+#                 if map_ver[i][j]==0:break
+#                 if j==3:
+#                     val_score+=1
+#                     for k in range(4):map_ver[i][k]=0
+#                     chk_get=True              
+#         if chk_get==False:break
+
+#         for i in range(8,3,-1):
+#             c2_chk=[]
+#             for j in range(4):
+#                 if map_ver[i][j]==0:continue
+#                 if map_ver[i][j]==2:c2_chk.append(j)
+#                 else:
+#                     lY=i
+#                     while lY+1<10 and map_ver[lY+1][j]==0:
+#                         map_ver[lY+1][j]=map_ver[lY][j]
+#                         map_ver[lY][j]=0
+#                         lY+=1
+#             if len(c2_chk)==0:continue
+#             lY=i
+#             chk_crash=True
+#             while chk_crash:
+#                 if lY>=9:break
+#                 for j in c2_chk: 
+#                     if map_ver[lY+1][j]>0:
+#                         chk_crash=False
+#                         break
+#                 if chk_crash:
+#                     for j in c2_chk: 
+#                         map_ver[lY+1][j]=map_ver[lY][j]
+#                         map_ver[lY][j]=0
+#                     lY+=1
+
+#     while True:
+#         chk_get=False
+#         for i in range(9,5,-1):
+#             for j in range(4):
+#                 if map_hor[j][i]==0:break
+#                 if j==3:
+#                     val_score+=1
+#                     for k in range(4):map_hor[k][i]=0
+#                     chk_get=True              
+#         if chk_get==False:break
+
+#         for i in range(8,3,-1):
+#             c3_chk=[]
+#             for j in range(4):
+#                 if map_hor[j][i]==0:continue
+#                 if map_hor[j][i]==3:c3_chk.append(j)
+#                 else:
+#                     lX=i
+#                     while lX+1<10 and map_hor[j][lX+1]==0:
+#                         map_hor[j][lX+1]=map_hor[j][lX]
+#                         map_hor[j][lX]=0
+#                         lX+=1
+#             if len(c3_chk)==0:continue
+#             lX=i
+#             chk_crash=True
+#             while chk_crash:
+#                 if lX>=9:break
+#                 for j in c3_chk: 
+#                     if map_hor[j][lX+1]>0:
+#                         chk_crash=False
+#                         break
+#                 if chk_crash:
+#                     for j in c3_chk: 
+#                         map_hor[j][lX+1]=map_hor[j][lX]
+#                         map_hor[j][lX]=0
+#                     lX+=1
+
+# def act_blkDrop(blkV,blkH,blkC):
+#     global map_ver
+#     global map_hor
+
+#     while blkV[1][1]<9 and map_ver[blkV[0][1]+1][blkV[0][0]]==0 and map_ver[blkV[1][1]+1][blkV[1][0]]==0:
+#         blkV[0][1]+=1
+#         blkV[1][1]+=1
+#     while blkH[1][0]<9 and map_hor[blkH[0][1]][blkH[0][0]+1]==0 and map_hor[blkH[1][1]][blkH[1][0]+1]==0:
+#         blkH[0][0]+=1
+#         blkH[1][0]+=1
+#     map_ver[blkV[0][1]][blkV[0][0]]=blkC
+#     map_ver[blkV[1][1]][blkV[1][0]]=blkC
+#     map_hor[blkH[0][1]][blkH[0][0]]=blkC
+#     map_hor[blkH[1][1]][blkH[1][0]]=blkC
+
+# num_block=int(input())
+# for _ in range(num_block):
+#     blk_case,blk_locY,blk_locX=map(int,input().split())
+#     blk_infV=[]
+#     set_blkInf(blk_case,blk_locX,blk_locY,blk_infV)
+#     blk_infH=copy.deepcopy(blk_infV)
+
+#     act_blkDrop(blk_infV,blk_infH,blk_case)
+#     chk_getScore()
+#     chk_outRange()
+
+# print(val_score)
+# print(cal_blk())
+
+# #3954
+# cnt_case=int(input())
+# CODE_CNT_CUTLINE=50000000
+# for _ in range(cnt_case):
+#     size_db,size_code,size_input=map(int,input().split())
+#     db_inf=[0]*size_db
+#     code_inf=input()
+#     input_inf=input()
+#     point_db=0
+#     point_code=0
+#     point_input=0
+
+#     dir_loopGOTO=[-1]*size_code
+#     dir_loopPAIR=[]
+#     for i in range(size_code):
+#         if code_inf[i]=='[':
+#             dir_loopPAIR.append(i)
+#         if code_inf[i]==']':
+#             tmp=len(dir_loopPAIR)-1
+#             dir_loopGOTO[i]=dir_loopPAIR[tmp]
+#             dir_loopGOTO[dir_loopPAIR.pop()]=i
+
+#     for _ in range(CODE_CNT_CUTLINE):
+#         if not point_code<size_code: break
+
+#         if code_inf[point_code]=='-':
+#             db_inf[point_db]-=1
+#             if db_inf[point_db]<0:db_inf[point_db]=255
+
+#         elif code_inf[point_code]=='+':
+#             db_inf[point_db]+=1
+#             if db_inf[point_db]>255:db_inf[point_db]=0
+
+#         elif code_inf[point_code]=='<':
+#             point_db-=1
+#             if point_db<0:point_db=size_db-1
+
+#         elif code_inf[point_code]=='>':
+#             point_db+=1
+#             if point_db>=size_db:point_db=0
+
+#         elif code_inf[point_code]=='[':
+#             if db_inf[point_db]==0:point_code=dir_loopGOTO[point_code]
+
+#         elif code_inf[point_code]==']':
+#             if db_inf[point_db]!=0:point_code=dir_loopGOTO[point_code]
+
+#         elif code_inf[point_code]==',':
+#             if point_input<size_input:
+#                 db_inf[point_db]=ord(input_inf[point_input])
+#                 point_input+=1
+#             else:db_inf[point_db]=255
+#         point_code+=1
+
+#     if point_code>=size_code:
+#         print('Terminates')
+#         continue
+
+#     bt_chk=[False]*size_code
+#     for _ in range(CODE_CNT_CUTLINE):
+#         if not point_code<size_code: break
+
+#         if code_inf[point_code]=='-':
+#             db_inf[point_db]-=1
+#             if db_inf[point_db]<0:db_inf[point_db]=255
+
+#         elif code_inf[point_code]=='+':
+#             db_inf[point_db]+=1
+#             if db_inf[point_db]>255:db_inf[point_db]=0
+
+#         elif code_inf[point_code]=='<':
+#             point_db-=1
+#             if point_db<0:point_db=size_db-1
+
+#         elif code_inf[point_code]=='>':
+#             point_db+=1
+#             if point_db>=size_db:point_db=0
+
+#         elif code_inf[point_code]=='[':
+#             if db_inf[point_db]==0:point_code=dir_loopGOTO[point_code]
+
+#         elif code_inf[point_code]==']':
+#             bt_chk[point_code]=True
+#             if db_inf[point_db]!=0:point_code=dir_loopGOTO[point_code]
+
+#         elif code_inf[point_code]==',':
+#             if point_input<size_input:
+#                 db_inf[point_db]=ord(input_inf[point_input])
+#                 point_input+=1
+#             else:db_inf[point_db]=255
+#         point_code+=1
+    
+#     for i in range(size_code-1,-1,-1):
+#         if bt_chk[i]==True:
+#             bt_rng=i
+#             break
+#     val_ed=bt_rng
+#     val_st=dir_loopGOTO[val_ed]
+#     print("Loops "+str(val_st)+" "+str(val_ed))
+
 # map_size,dot_size=map(int,input().split())
 # dot_infR=[0]*(map_size+1)
 # dot_infC=[0]*(map_size+1)

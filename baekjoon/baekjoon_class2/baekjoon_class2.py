@@ -1,5 +1,4 @@
 #18111
-#remove=2 / build=1
 n,m,b=map(int,input().split())
 t=[]
 k=[]
@@ -26,8 +25,6 @@ for tL in range(maxL,minL-1,-1):
         ansT=val_time
         ansL=tL
 print(ansT,ansL)
-
-    
 
 # #15829
 # n=int(input())

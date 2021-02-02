@@ -1,88 +1,174 @@
-import sys
-sys.setrecursionlimit(100000)
-unit_M,build_hp,build_gn=map(int,input().split())
-unit_E=0
-turn_min=999999
+#1941
+import copy
+map_ver=[[0 for hor in range(4)] for ver in range(10)]
+map_hor=[[0 for hor in range(10)] for ver in range(4)]
+blk_dir=[[0,0],[0,0],[0,1],[1,0]]
+val_score=0
 
-def turn_attackE(mine,enemy,hp):
-    return mine-enemy
+def set_blkInf(cs,x,y,blk):
+    global blk_dir
 
-def turn_generate(enemy,hp,generate):
-    if hp>0:return enemy+generate
-    else:return enemy
+    blk.append([])
+    blk[0].append(x)
+    blk[0].append(y)
+    blk.append([])
+    blk[1].append(x+blk_dir[cs][1])
+    blk[1].append(y+blk_dir[cs][0])
+def cal_sumHor(x):
+    global map_hor
+    tmp=0
+    for i in range(4):tmp+=map_hor[i][x]
+    return tmp
+def cal_blk():
+    global map_ver
+    global map_hor
+    cnt_blk=0
 
-def chk_win(enemy,hp):
-    if enemy==0 and hp==0:return True
-    else:return False
+    for i in range(6,10):
+        for j in range(4):
+            if map_ver[i][j]>0:cnt_blk+=1
+            if map_hor[j][i]>0:cnt_blk+=1
+    
+    return cnt_blk
+        
+def chk_outRange():
+    global map_ver
+    global map_hor
 
-def chk_lose(mine):
-    if mine<=0:return True
-    else:return False
+    chkV=[sum(map_ver[5]),sum(map_ver[4])]
+    chkH=[cal_sumHor(5),cal_sumHor(4)]
+    if chkV[1]>0:cntV=2
+    elif chkV[0]>0:cntV=1
+    else:cntV=0
+    if chkH[1]>0:cntH=2
+    elif chkH[0]>0:cntH=1
+    else:cntH=0
 
-def chk_battle(mine,enemy):
-    while mine>0 and enemy>0:
-        mine-=enemy
-        enemy-=mine
-    if mine>enemy:return True
-    else:return False
+    if cntV>0:
+        for i in range(9-cntV,9-cntV-6,-1):
+            for j in range(4):map_ver[i+cntV][j]=map_ver[i][j]
+    if cntH>0:
+        for i in range(9-cntH,9-cntH-6,-1):
+            for j in range(4):map_hor[j][i+cntH]=map_hor[j][i]
 
-def chk_loop(mine,hp,generate):
-    if hp-mine>0 and mine<=generate:return True
-    else:return False
+def chk_getScore(x):
+    global map_ver
+    global map_hor
+    global val_score
+    
+    while True:
+        chk_get=False
+        for i in range(9,5,-1):
+            for j in range(4):
+                if map_ver[i][j]==0:break
+                if j==3:
+                    val_score+=1
+                    for k in range(4):map_ver[i][k]=0
+                    chk_get=True              
+        if chk_get==False:break
 
-def set_attack(mine,enemy,hp):
-    if hp<=0:
-        tBuild=0
-        tEnemy=mine
-    elif mine>=hp:
-        tBuild=hp
-        tEnemy=mine-hp
-    elif mine>=enemy:
-        tBuild=mine-enemy
-        tEnemy=enemy
-    else:
-        tBuild=mine
-        tEnemy=0
-    return tBuild,tEnemy 
-def set_dirVal(tB,tE):
-    if tB>=tE:return -1,1
-    else:return 1,-1
-def simulator(mine,enemy,hp,turn):
-    global build_gn
-    global turn_min
+        for i in range(8,3,-1):
+            c2_chk=[-1]*4
+            for j in range(4):
+                if map_ver[i][j]==0:continue
+                if map_ver[i][j]==2:c2_chk[j]=j
+                else:
+                    lY=i
+                    while lY+1<10 and map_ver[lY+1][j]==0:
+                        map_ver[lY+1][j]=map_ver[lY][j]
+                        map_ver[lY][j]=0
+                        lY+=1
+            if sum(c2_chk)==-4:continue
+            c2_chk.remove(-1)
+            lY=i
+            chk_crash=True
+            while chk_crash:
+                if lY>=9:break
+                for j in c2_chk: 
+                    if map_ver[lY+1][j]>0:
+                        chk_crash=False
+                        break
+                if chk_crash:
+                    for j in c2_chk: 
+                        map_ver[lY+1][j]=map_ver[lY][j]
+                        map_ver[lY][j]=0
+                    lY+=1
 
-    if chk_win(enemy,hp):
-        if turn_min>turn:turn_min=turn
-        return
-    if turn>=turn_min:return
+    while True:
+        chk_get=False
+        for i in range(9,5,-1):
+            for j in range(4):
+                if map_hor[j][i]==0:break
+                if j==3:
+                    val_score+=1
+                    for k in range(4):map_hor[k][i]=0
+                    chk_get=True              
+        if chk_get==False:break
 
-    mine=turn_attackE(mine,enemy,hp)
-    if chk_lose(mine):return
-    if chk_loop(mine,hp,build_gn):return
-    enemy=turn_generate(enemy,hp,build_gn)
-    turn+=1
+        for i in range(8,3,-1):
+            c3_chk=[-1]*4
+            for j in range(4):
+                if map_hor[j][i]==0:continue
+                if map_hor[j][i]==3:c3_chk[j]=j
+                else:
+                    lX=i
+                    while lX+1<10 and map_hor[j][lX+1]==0:
+                        map_hor[j][lX+1]=map_hor[j][lX]
+                        map_hor[j][lX]=0
+                        lX+=1
+            if sum(c3_chk)==-4:continue
+            c3_chk.remove(-1)
+            lX=i
+            chk_crash=True
+            while chk_crash:
+                if lX>=9:break
+                for j in c3_chk: 
+                    if map_hor[j][lX+1]>0:
+                        chk_crash=False
+                        break
+                if chk_crash:
+                    for j in c3_chk: 
+                        map_hor[j][lX+1]=map_hor[j][lX]
+                        map_hor[j][lX]=0
+                    lX+=1
 
-    attack_toBuild,attack_toEnemy=set_attack(mine,enemy,hp)
-    v_tB,v_tE=set_dirVal(attack_toBuild,attack_toEnemy)
-    while attack_toEnemy>=0 and attack_toBuild>=0:
-        if chk_battle(mine,enemy)==True:simulator(mine,enemy-attack_toEnemy,hp-attack_toBuild,turn)
-        attack_toBuild+=v_tB
-        attack_toEnemy+=v_tE
-def chk_shorter(mine,enemy,hp,turn):
-    global build_gn
-    global turn_min
+def act_blkDrop(blkV,blkH,blkC):
+    global map_ver
+    global map_hor
 
-    if hp-mine<=0:return mine,enemy,hp,turn
-    if build_gn>=mine:
-        print(-1)
-        sys.exit()
-    dmg=mine-build_gn
-    while hp>mine:
-        hp-=dmg
-        turn+=1
-    return mine,enemy,hp,turn
+    while blkV[1][1]<9 and map_ver[blkV[0][1]+1][blkV[0][0]]==0 and map_ver[blkV[1][1]+1][blkV[1][0]]==0:
+        blkV[0][1]+=1
+        blkV[1][1]+=1
+    while blkH[1][0]<9 and map_hor[blkH[0][1]][blkH[0][0]+1]==0 and map_hor[blkH[1][1]][blkH[1][0]+1]==0:
+        blkH[0][0]+=1
+        blkH[1][0]+=1
+    map_ver[blkV[0][1]][blkV[0][0]]=blkC
+    map_ver[blkV[1][1]][blkV[1][0]]=blkC
+    map_hor[blkH[0][1]][blkH[0][0]]=blkC
+    map_hor[blkH[1][1]][blkH[1][0]]=blkC
+    
+def test_printDB():
+    global map_ver
+    global map_hor
+    for i in range(4):
+        print(map_hor[i])
+    for i in range(4,10):
+        print(map_ver[i])
+    print('-------------------------------------------')
 
-mine,enemy,hp,turn=chk_shorter(unit_M,unit_E,build_hp-unit_M,1)
-simulator(mine,enemy,hp,turn)
-if turn_min==999999:print(-1)
-else:print(turn_min)
+
+num_block=int(input())
+for i in range(num_block):
+    blk_case,blk_locY,blk_locX=map(int,input().split())
+    blk_infV=[]
+    set_blkInf(blk_case,blk_locX,blk_locY,blk_infV)
+    blk_infH=copy.deepcopy(blk_infV)
+    #print(blk_infV)
+
+    act_blkDrop(blk_infV,blk_infH,blk_case)
+    chk_getScore(i)
+    chk_outRange()
+    #test_printDB()
+
+print(val_score)
+print(cal_blk())

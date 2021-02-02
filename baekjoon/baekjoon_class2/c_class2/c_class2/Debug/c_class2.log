@@ -1,3 +1,2 @@
 ﻿  cccccc.cpp
-D:\github_overnight\overnight_git\baekjoon\baekjoon_class2\c_class2\c_class2\cccccc.cpp(125,52): warning C4244: '인수': 'LLG'에서 'cint'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   c_class2.vcxproj -> D:\github_overnight\overnight_git\baekjoon\baekjoon_class2\c_class2\Debug\c_class2.exe

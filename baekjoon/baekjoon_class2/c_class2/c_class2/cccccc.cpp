@@ -1,3 +1,199 @@
+//19235
+#include <stdio.h>
+
+#define MAX_BLOCK 10000
+#define LEN_LONG 10
+#define LEN_SHORT 4
+
+typedef struct {
+	int case_block;
+	int loc_x;
+	int loc_y;
+} blk;
+
+int shape_block[3][2] = { {0,0},{0,1},{1,0} };
+
+void task_setBlockLoc(int mVer[][LEN_LONG], int mHor[][LEN_SHORT], int cBlock, int lX, int lY);
+void task_removeBlock(int mVer[][LEN_LONG], int mHor[][LEN_SHORT], int* vScore);
+int task_cntBlock(int mVer[][LEN_LONG], int mHor[][LEN_SHORT]);
+void testing(int mVer[][LEN_LONG], int mHor[][LEN_SHORT], int num);
+
+int main()
+{
+	int value_score = 0;
+	int try_drop;
+	blk info_block[MAX_BLOCK];
+	int map_ver[LEN_SHORT][LEN_LONG] = { 0 };
+	int map_hor[LEN_LONG][LEN_SHORT] = { 0 };
+
+	scanf("%d", &try_drop);
+	for (int i = 0; i < try_drop; i++)
+		scanf("%d %d %d", &info_block[i].case_block, &info_block[i].loc_x, &info_block[i].loc_y);
+
+	for (int i = 0; i < try_drop; i++) {
+		task_setBlockLoc(map_ver, map_hor, info_block[i].case_block - 1, info_block[i].loc_x, info_block[i].loc_y);
+		//testing(map_ver, map_hor, i + 1);
+		task_removeBlock(map_ver, map_hor, &value_score);
+		//testing(map_ver, map_hor, i + 1);
+	}
+	printf("%d\n%d", value_score, task_cntBlock(map_ver, map_hor));
+	//testing(map_ver, map_hor, 100000);
+}
+
+void task_setBlockLoc(int mVer[][LEN_LONG], int mHor[][LEN_SHORT], int cBlock, int lX, int lY)
+{
+	int llX;
+	int llY;
+	int cnt;
+
+	llX = lX + shape_block[cBlock][0];
+	llY = lY + shape_block[cBlock][1];
+
+	cnt = 0;
+	while (mVer[lX][lY + cnt + 1] == 0 && mVer[llX][llY + cnt + 1] == 0 && llY + cnt + 1 < LEN_LONG)
+		cnt++;
+	mVer[lX][lY + cnt] = mVer[llX][llY + cnt] = 1;
+
+	cnt = 0;
+	while (mHor[lX + cnt + 1][lY] == 0 && mHor[llX + cnt + 1][llY] == 0 && llX + cnt + 1 < LEN_LONG)
+		cnt++;
+	mHor[lX + cnt][lY] = mHor[llX + cnt][llY] = 1;
+}
+void task_removeBlock(int mVer[][LEN_LONG], int mHor[][LEN_SHORT], int* vScore)
+{
+	int loc_remove;
+	int tmp_remove;
+	int tmp_loc;
+	int chkArr[10];
+
+	while (1) {
+		loc_remove = 10;
+		for (int i = 0; i < 10; i++)
+			chkArr[i] = 0;
+		for (int i = 9; i >= 4; i--) {
+			tmp_remove = 0;
+			for (int j = 0; j < 4; j++)
+				tmp_remove += mVer[j][i];
+			if (tmp_remove == 4) {
+				chkArr[i] = 1;
+				if (loc_remove == 10) loc_remove = i;
+			}
+		}
+
+		if (loc_remove == 10) break;
+
+		for (int i = 9; i >= 4; i--)
+			if (chkArr[i] == 1) {
+				for (int j = 0; j < 4; j++)
+					mVer[j][i] = 0;
+				*vScore += 1;
+			}
+
+		for (int i = loc_remove - 1; i >= 4; i--)
+			for (int j = 0; j < 4; j++) {
+				if (mVer[j][i] == 0) continue;
+				mVer[j][i] = 0;
+				tmp_loc = i;
+				while (mVer[j][tmp_loc + 1] == 0 && tmp_loc + 1 < LEN_LONG)
+					tmp_loc++;
+				mVer[j][tmp_loc] = 1;
+			}
+	}
+	loc_remove = 0;
+	for (int i = 0; i < 4; i++)
+		if (mVer[i][5] == 1) loc_remove = 1;
+	for (int i = 0; i < 4; i++)
+		if (mVer[i][4] == 1) loc_remove = 2;
+	if (loc_remove != 0) {
+		for (int i = 9; i > 9 - loc_remove; i--)
+			for (int j = 0; j < 4; j++)
+				mVer[j][i] = 0;
+		for (int i = 9 - loc_remove; i >= 4; i--)
+			for (int j = 0; j < 4; j++) {
+				if (mVer[j][i] == 0) continue;
+				mVer[j][i] = 0;
+				mVer[j][i + loc_remove] = 1;
+			}
+	}
+
+	while (1) {
+		loc_remove = 10;
+		for (int i = 0; i < 10; i++)
+			chkArr[i] = 0;
+		for (int i = 9; i >= 4; i--) {
+			tmp_remove = 0;
+			for (int j = 0; j < 4; j++)
+				tmp_remove += mHor[i][j];
+			if (tmp_remove == 4) {
+				chkArr[i] = 1;
+				if (loc_remove == 10) loc_remove = i;
+			}
+		}
+
+		if (loc_remove == 10) break;
+
+		for (int i = 9; i >= 4; i--)
+			if (chkArr[i] == 1) {
+				for (int j = 0; j < 4; j++)
+					mHor[i][j] = 0;
+				*vScore += 1;
+			}
+		for (int i = loc_remove - 1; i >= 4; i--)
+			for (int j = 0; j < 4; j++) {
+				if (mHor[i][j] == 0) continue;
+				mHor[i][j] = 0;
+				tmp_loc = i;
+				while (mHor[tmp_loc + 1][j] == 0 && tmp_loc + 1 < LEN_LONG)
+					tmp_loc++;
+				mHor[tmp_loc][j] = 1;
+			}
+	}
+	loc_remove = 0;
+	for (int i = 0; i < 4; i++)
+		if (mHor[5][i] == 1) loc_remove = 1;
+	for (int i = 0; i < 4; i++)
+		if (mHor[4][i] == 1) loc_remove = 2;
+	if (loc_remove != 0) {
+		for (int i = 9; i > 9 - loc_remove; i--)
+			for (int j = 0; j < 4; j++)
+				mHor[i][j] = 0;
+		for (int i = 9 - loc_remove; i >= 4; i--)
+			for (int j = 0; j < 4; j++) {
+				if (mHor[i][j] == 0) continue;
+				mHor[i][j] = 0;
+				mHor[i + loc_remove][j] = 1;
+			}
+	}
+}
+int task_cntBlock(int mVer[][LEN_LONG], int mHor[][LEN_SHORT])
+{
+	int cnt = 0;
+
+	for (int i = 9; i >= 6; i--)
+		for (int j = 0; j < 4; j++) {
+			cnt += mVer[j][i];
+			cnt += mHor[i][j];
+		}
+
+	return cnt;
+}
+
+void testing(int mVer[][LEN_LONG], int mHor[][LEN_SHORT], int num)
+{
+	printf("\n%d Trying\n", num);
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j <= 9; j++)
+			printf("%d ", mVer[i][j]);
+		printf("\n");
+	}
+	for (int i = 4; i <= 9; i++) {
+		for (int j = 0; j < 4; j++)
+			printf("%d ", mHor[i][j]);
+		printf("\n");
+	}
+	printf("\n");
+}
+
 ////10866
 //#include <stdio.h>
 //#include <string>
