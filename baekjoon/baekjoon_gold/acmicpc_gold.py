@@ -1,3 +1,241 @@
+#12094
+import sys
+import copy
+map_size=int(sys.stdin.readline())
+map_inf=[list(map(int,sys.stdin.readline().split())) for _ in range(map_size)]
+val_mx=0
+val_lim=0
+
+def task_findMax(arr):
+    global map_size
+    global val_lim
+
+    tArr=[]
+    for i in range(map_size):
+        tArr.append(max(arr[i]))
+    tmp=max(tArr)
+
+    if tmp==val_lim:
+        print(tmp)
+        sys.exit()
+
+    return tmp
+
+def task_chkCanMove(arr,turn):
+    global map_size
+    global val_mx
+
+    tmp_mx=0
+    tmp_sm=0
+    for i in range(map_size):
+        for j in range(map_size):
+            tmp_sm+=arr[i][j]
+            if tmp_mx<arr[i][j]:tmp_mx=arr[i][j]
+
+    if val_mx>0:     
+        tmp_lim=val_mx
+        for _ in range(11-turn):tmp_lim/=2
+        if tmp_lim>=tmp_mx:return True
+
+    if tmp_mx*2>tmp_sm:
+        if val_mx<tmp_mx:val_mx=tmp_mx
+        return True
+    return False
+
+def task_chkDifferent(base,copy):
+    global map_size
+    
+    for i in range(map_size):
+        for j in range(map_size):
+            if base[i][j]!=copy[i][j]:return True
+    return False
+
+def task_shiftBlock(map_inf,addY,addX):
+    global map_size
+
+    chk=[[0 for _ in range(map_size)] for _ in range(map_size)]
+
+    if addY==1:     # ↓ 0
+        for y in range(map_size-2,-1,-1):
+            for x in range(map_size):
+                if map_inf[y][x]==0:continue
+                cY=y
+                while cY+1<map_size and map_inf[cY+1][x]==0:cY+=1
+                if cY+1<map_size and map_inf[y][x]==map_inf[cY+1][x] and chk[cY][x]==0:
+                    map_inf[cY+1][x]*=2
+                    map_inf[y][x]=0
+                    chk[cY][x]=1
+                elif map_inf[cY][x]==0:
+                    map_inf[cY][x]=map_inf[y][x]
+                    map_inf[y][x]=0
+
+    elif addY==-1:  # ↑ 1
+        for y in range(1,map_size):
+            for x in range(map_size):
+                if map_inf[y][x]==0:continue
+                cY=y
+                while cY-1>=0 and map_inf[cY-1][x]==0:cY-=1
+                if cY-1>=0 and map_inf[y][x]==map_inf[cY-1][x] and chk[cY][x]==0:
+                    map_inf[cY-1][x]*=2
+                    map_inf[y][x]=0
+                    chk[cY][x]=1
+                elif map_inf[cY][x]==0:
+                    map_inf[cY][x]=map_inf[y][x]
+                    map_inf[y][x]=0
+
+    elif addX==1:   # → 2
+        for x in range(map_size-2,-1,-1):
+            for y in range(map_size):
+                if map_inf[y][x]==0:continue
+                cX=x
+                while cX+1<map_size and map_inf[y][cX+1]==0:cX+=1
+                if cX+1<map_size and map_inf[y][x]==map_inf[y][cX+1] and chk[y][cX]==0:
+                    map_inf[y][cX+1]*=2
+                    map_inf[y][x]=0
+                    chk[y][cX]=1
+                elif map_inf[y][cX]==0:
+                    map_inf[y][cX]=map_inf[y][x]
+                    map_inf[y][x]=0
+
+    elif addX==-1:  # ← 3
+        for x in range(1,map_size):
+            for y in range(map_size):
+                if map_inf[y][x]==0:continue
+                cX=x
+                while cX-1>=0 and map_inf[y][cX-1]==0:cX-=1
+                if cX-1>=0 and map_inf[y][x]==map_inf[y][cX-1] and chk[y][cX]==0:
+                    map_inf[y][cX-1]*=2
+                    map_inf[y][x]=0
+                    chk[y][cX]=1
+                elif map_inf[y][cX]==0:
+                    map_inf[y][cX]=map_inf[y][x]
+                    map_inf[y][x]=0
+
+def task_play(map_inf,val_turn):
+    global map_size
+    global val_mx
+
+    if val_turn>10:
+        tmp_mx=task_findMax(map_inf)
+        if val_mx<tmp_mx:val_mx=tmp_mx
+        return
+    if task_chkCanMove(map_inf,val_turn):return
+    
+    for cY,cX in [(1,0),(-1,0),(0,1),(0,-1)]:
+        map_copy=copy.deepcopy(map_inf)
+        task_shiftBlock(map_copy,cY,cX)
+        if task_chkDifferent(map_inf,map_copy):task_play(map_copy,val_turn+1)
+
+tmp=task_findMax(map_inf)
+val_lim=tmp*1024
+task_play(map_inf,1)
+if val_mx==0:val_mx=tmp
+print(val_mx)
+
+# #12100
+# import sys
+# import copy
+# map_size=int(sys.stdin.readline())
+# map_inf=[list(map(int,sys.stdin.readline().split())) for _ in range(map_size)]
+# mov_db=[[1,0],[-1,0],[0,1],[0,-1]] #↓↑→←
+# chk_dir=['↓','↑','→','←']
+# val_mx=0
+
+# def task_findMax(arr):
+#     global map_size
+#     global val_mx
+
+#     tArr=[]
+#     for i in range(map_size):
+#         tArr.append(max(arr[i]))
+#     tmp=max(tArr)
+
+#     if tmp>val_mx:val_mx=tmp
+
+# def task_chkDifferent(base,copy):
+#     global map_size
+    
+#     for i in range(map_size):
+#         for j in range(map_size):
+#             if base[i][j]!=copy[i][j]:return True
+#     return False
+
+# def task_shiftBlock(map_inf,addY,addX):
+#     global map_size
+
+#     chk=[[0 for _ in range(map_size)] for _ in range(map_size)]
+
+#     if addY==1:     # ↓ 0
+#         for y in range(map_size-2,-1,-1):
+#             for x in range(map_size):
+#                 cY=y
+#                 while cY+1<map_size and map_inf[cY+1][x]==0:cY+=1
+#                 if cY+1<map_size and map_inf[y][x]==map_inf[cY+1][x] and chk[cY][x]==0:
+#                     map_inf[cY+1][x]*=2
+#                     map_inf[y][x]=0
+#                     chk[cY][x]=1
+#                 elif map_inf[cY][x]==0:
+#                     map_inf[cY][x]=map_inf[y][x]
+#                     map_inf[y][x]=0
+
+#     elif addY==-1:  # ↑ 1
+#         for y in range(1,map_size):
+#             for x in range(map_size):
+#                 cY=y
+#                 while cY-1>=0 and map_inf[cY-1][x]==0:cY-=1
+#                 if cY-1>=0 and map_inf[y][x]==map_inf[cY-1][x] and chk[cY][x]==0:
+#                     map_inf[cY-1][x]*=2
+#                     map_inf[y][x]=0
+#                     chk[cY][x]=1
+#                 elif map_inf[cY][x]==0:
+#                     map_inf[cY][x]=map_inf[y][x]
+#                     map_inf[y][x]=0
+
+#     elif addX==1:   # → 2
+#         for x in range(map_size-2,-1,-1):
+#             for y in range(map_size):
+#                 cX=x
+#                 while cX+1<map_size and map_inf[y][cX+1]==0:cX+=1
+#                 if cX+1<map_size and map_inf[y][x]==map_inf[y][cX+1] and chk[y][cX]==0:
+#                     map_inf[y][cX+1]*=2
+#                     map_inf[y][x]=0
+#                     chk[y][cX]=1
+#                 elif map_inf[y][cX]==0:
+#                     map_inf[y][cX]=map_inf[y][x]
+#                     map_inf[y][x]=0
+
+#     elif addX==-1:  # ← 3
+#         for x in range(1,map_size):
+#             for y in range(map_size):
+#                 cX=x
+#                 while cX-1>=0 and map_inf[y][cX-1]==0:cX-=1
+#                 if cX-1>=0 and map_inf[y][x]==map_inf[y][cX-1] and chk[y][cX]==0:
+#                     map_inf[y][cX-1]*=2
+#                     map_inf[y][x]=0
+#                     chk[y][cX]=1
+#                 elif map_inf[y][cX]==0:
+#                     map_inf[y][cX]=map_inf[y][x]
+#                     map_inf[y][x]=0
+
+# def task_play(map_inf,val_turn):
+#     global map_size
+#     global mov_db
+
+#     if val_turn>5:
+#         task_findMax(map_inf)
+#         return
+    
+#     for i in range(4):
+#         map_copy=copy.deepcopy(map_inf)
+#         task_shiftBlock(map_copy,mov_db[i][0],mov_db[i][1])
+#         # print(f'< {val_turn} / {chk_dir[i]} >')
+#         # for i in range(map_size):print(map_copy[i])
+#         if task_chkDifferent(map_inf,map_copy):task_play(map_copy,val_turn+1)
+
+# task_findMax(map_inf)
+# task_play(map_inf,1)
+# print(val_mx)
+
 # #1941
 # import copy
 # map_ver=[[0 for hor in range(4)] for ver in range(10)]
