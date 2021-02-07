@@ -68,42 +68,6 @@
 # m.sort()
 # for i in range(n):print(m[i])
 
-# #1325
-# import sys
-# sys.setrecursionlimit(1000000)
-# n,m=map(int,sys.stdin.readline().split())
-# k=[]
-# for _ in range(n+1):k.append([])
-# ans=[0 for i in range(n+1)]
-# delCase=[0 for i in range(n+1)]
-# for _ in range(m):
-#     subC,mainC=map(int,sys.stdin.readline().split())
-#     k[mainC].append(subC)
-#     delCase[mainC]=mainC
-# tmp=set(delCase)
-# caseInf=list(tmp)
-
-# maxRoot=0
-# def searchAns(chk,x):
-#     global maxRoot
-#     global k
-#     maxRoot+=1
-#     chk[x]=True
-#     for i in range(len(k[x])):
-#         if chk[k[x][i]]==False:searchAns(chk,k[x][i])
-        
-# for i in caseInf:
-#     maxRoot=0
-#     chk=[False for j in range(n+1)]
-#     searchAns(chk,i)
-#     ans[i]=maxRoot
-
-# print(ans)
-
-# maxAns=max(ans)
-# for i in range(1,n+1):
-#     if maxAns==ans[i]:print(i,end=' ')
-
 # #1103
 # import sys
 # sys.setrecursionlimit(1000000)
