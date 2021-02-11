@@ -1,8 +1,96 @@
-#1074
-val_find,size_row,size_col=map(int,input().split())
-def find_ans(x,y):
-    global size_row
-    global size_col
+#9019
+import sys
+case_len=int(sys.stdin.readline())
+
+#def chk_same(x):
+#    k=x[0]
+#    for i in x:
+#        if i!=k:return False
+#    return True
+
+for _ in range(case_len):
+    val_now,val_obj=map(int,sys.stdin.readline().split())
+    stair=['']
+    data=[val_now]
+    loc=[-1]
+    chk=[False]*10000
+    st=0
+    ed=-1
+
+    while True:
+        ed+=1
+        if val_obj==data[ed]:
+            ans=[]
+            while ed>=0:
+                ans.append(stair[ed])
+                ed=loc[ed]
+            ans_len=len(ans)-1
+            for i in range(ans_len,-1,-1):print(ans[i],end='')
+            print()
+            break
+        if chk[data[ed]]==True:continue
+        chk[data[ed]]=True
+
+        #D
+        d_num=data[ed]*2
+        if d_num>9999:d_num-=10000
+        st+=1
+        stair.append('D')
+        data.append(d_num)
+        loc.append(ed)
+        #S
+        s_num=data[ed]-1
+        if s_num<0:s_num=9999
+        st+=1
+        stair.append('S')
+        data.append(s_num)
+        loc.append(ed)
+        #if chk_same(data[ed]):continue
+        #L
+        st+=1
+        l_num=data[ed]
+        if l_num<1000:l_num*=10
+        else:
+            tmp=int(l_num/1000)
+            l_num-=tmp*1000
+            l_num=l_num*10+tmp
+        stair.append('L')
+        data.append(l_num)
+        loc.append(ed)
+        #R
+        st+=1
+        r_num=data[ed]
+        tmp=r_num%10
+        r_num=int(r_num/10)
+        r_num+=tmp*1000
+        stair.append('R')
+        data.append(r_num)
+        loc.append(ed)
+
+# #1764
+# import sys
+# fst_size,sec_size=map(int,sys.stdin.readline().split())
+# fst_db=[sys.stdin.readline().rstrip() for _ in range(fst_size)]
+# fst_db.sort()
+# same_cnt=0
+# same_db=[]
+#
+# for _ in range(sec_size):
+#     sec_str=sys.stdin.readline().rstrip()
+#     sec_len=len(sec_str)
+#     st=0
+#     ed=fst_size-1
+#     while st<=ed:
+#         md=int((st+ed)/2)
+#         if sec_str==fst_db[md]:
+#             same_cnt+=1
+#             same_db.append(sec_str)
+#             break
+#         if sec_str<fst_db[md]:ed=md-1
+#         else:st=md+1
+# same_db.sort()
+# print(same_cnt)
+# for i in range(same_cnt):print(same_db[i])
 
 # #1012
 # val_case=int(input())
@@ -23,7 +111,7 @@ def find_ans(x,y):
 #             if dMap[mR][mC]==False:continue
 #             if dChk[mR][mC]==True:continue
 #             stk.append([mR,mC])
-#             dChk[mR][mC]=True        
+#             dChk[mR][mC]=True
 #         ed+=1
 
 # def find_ans(db_map,sR,sC):
