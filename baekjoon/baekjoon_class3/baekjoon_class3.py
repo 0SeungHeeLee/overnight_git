@@ -1,51 +1,346 @@
-#1927
-import sys
-heap_size=int(sys.stdin.readline())
-heap_db=[0 for i in range(131072)]
-heap_last=-1
+#
 
-def get_parentNod(x):
-    return int((x-1)/2)
-def get_childNod(x):
-    return x*2+1,x*2+2
-def get_minNod(L,R):
-    global heap_db
+# #5525
+# import sys
+# val_pI=int(sys.stdin.readline())
+# str_len=int(sys.stdin.readline())
+# str_db=sys.stdin.readline().rstrip()
+# nStr=[]
+# nStr.append(str_db)
+# nStr.append('EE')
+# str_db=''.join(nStr)
+#
+# trig_pass=True
+# val_comboCnt=0
+# val_ans=0
+# i=-1
+# while i<str_len:
+#     i+=1
+#     if val_comboCnt >= val_pI:
+#         val_ans += 1
+#
+#     if trig_pass:
+#         if str_db[i]=='I':trig_pass=False
+#         continue
+#     if str_db[i]=='O' and str_db[i+1]=='I':
+#         val_comboCnt+=1
+#         i+=1
+#     else:
+#         val_comboCnt=0
+#         if str_db[i]=='O':trig_pass=True
+#
+# print(val_ans)
 
-    if heap_db[R] == 0: return L
-    elif heap_db[L] == 0: return R
-    elif heap_db[L] <= heap_db[R]: return L
-    else: return R
+# #2630
+# import sys
+# map_size=int(sys.stdin.readline())
+# map_db=[list(map(int,sys.stdin.readline().split())) for _ in range(map_size)]
+#
+# val_cnt=[0,0]
+#
+# def chk_equal(row,col,size):
+#     global map_db
+#     val_chk=map_db[row][col]
+#     for i in range(row,row+size):
+#         for j in range(col,col+size):
+#             if map_db[i][j]!=val_chk:return False
+#     return True
+#
+# def searching(row,col,size):
+#     global map_db
+#     global val_cnt
+#
+#     if chk_equal(row,col,size):
+#         val_cnt[map_db[row][col]]+=1
+#         return
+#
+#     size_chg=int(size/2)
+#
+#     searching(row, col, size_chg)
+#     searching(row, col+size_chg, size_chg)
+#     searching(row+size_chg, col, size_chg)
+#     searching(row+size_chg, col+size_chg, size_chg)
+#
+# searching(0,0,map_size)
+#
+# print(val_cnt[0])
+# print(val_cnt[1])
 
-for t in range(heap_size):
-    x=int(sys.stdin.readline())
+# #2579
+# import sys
+# sys.setrecursionlimit(100000)
+# stair_len=int(sys.stdin.readline())
+# stair_db=[int(sys.stdin.readline()) for _ in range(stair_len)]
+# stair_db.insert(0,0)
+# stair_db.append(0)
+# stair_db.append(0)
+# tmp=stair_len+3
+# stair_chk=[[0,0,0] for _ in range(tmp)]
+# stair_chk[0][0]=-1
+#
+# def searching(loc,val,combo):
+#     global stair_db
+#     global stair_len
+#     global stair_chk
+#
+#     if combo>2:return
+#     if loc>stair_len:return
+#     if stair_chk[loc][combo]>=val:return
+#
+#     stair_chk[loc][combo]=val
+#
+#     loc+=1
+#     searching(loc, val + stair_db[loc], combo + 1)
+#     loc+=1
+#     searching(loc, val + stair_db[loc], 1)
+#
+# searching(0,0,0)
+# ans=max(stair_chk[stair_len])
+# print(ans)
 
-    if x==0:
-        if heap_last==-1: print(0)
-        else:
-            print(heap_db[0])
-            heap_db[0]=0
-            heap_db[0], heap_db[heap_last] = heap_db[heap_last], heap_db[0]
-            nodLoc_now=0
-            heap_last -= 1
-            while True:
-                nodLoc_lt, nodLoc_rt = get_childNod(nodLoc_now)
 
-                if nodLoc_lt>heap_last:break
-                nodLoc_goto=get_minNod(nodLoc_lt,nodLoc_rt)
-                if heap_db[nodLoc_now]<=heap_db[nodLoc_goto]:break
+# #5430
+# import sys
+# case_cnt=int(sys.stdin.readline())
+#
+# def func_chkStr(x):
+#     ordX=ord(x)
+#     if 48<=ordX and ordX<=57:return False
+#     return True
+# for _ in range(case_cnt):
+#     order_db=sys.stdin.readline().rstrip()
+#     inf_len=int(sys.stdin.readline())
+#     inf_input=sys.stdin.readline().rstrip()
+#     inf_db=[]
+#     inf_dbLen = len(inf_input)
+#     chk_st=-1
+#     for i in range(inf_dbLen):
+#         if func_chkStr(inf_input[i]):
+#             if chk_st!=-1:
+#                 arr_num=inf_input[chk_st:i]
+#                 chk_st=-1
+#                 inf_db.append(int(arr_num))
+#             continue
+#         if chk_st==-1:chk_st=i
+#
+#     #True:순 / False: 역
+#     ord_trigger=True
+#     exit_trigger=False
+#     order_len=len(order_db)
+#     for tsk in order_db:
+#         if tsk=='R':
+#             if ord_trigger==True:ord_trigger=False
+#             else:ord_trigger=True
+#         else:
+#             if inf_len==0:
+#                 print('error')
+#                 exit_trigger=True
+#                 break
+#             inf_len -= 1
+#             if ord_trigger==True:inf_db.pop(0)
+#             else:inf_db.pop(inf_len)
+#
+#     if exit_trigger:continue
+#     if inf_len==0:
+#         print('[]')
+#         continue
+#     print('[', end='')
+#     if ord_trigger==True:
+#         inf_lenTmp=inf_len-1
+#         for i in range(inf_lenTmp):print(inf_db[i],end=',')
+#     else:
+#         inf_lenTmp=0
+#         for i in range(inf_len-1,inf_lenTmp,-1):print(inf_db[i],end=',')
+#     print(inf_db[inf_lenTmp], end=']\n')
 
-                heap_db[nodLoc_now],heap_db[nodLoc_goto]=heap_db[nodLoc_goto],heap_db[nodLoc_now]
-                nodLoc_now=nodLoc_goto
-        continue
+# #2178
+# import sys
+#
+# map_lenR,map_lenC=map(int,sys.stdin.readline().split())
+# map_db=[list(sys.stdin.readline().rstrip()) for _ in range(map_lenR)]
+#
+# map_chk=[[False for _ in range(map_lenC)] for _ in range(map_lenR)]
+# map_chk[0][0]=True
+# VAL_BLK='0'
+# VAL_ROD='1'
+# st=0
+# ed=-1
+# dps_stair=[1]
+# dps_loc=[[0,0]]
+# obj_loc=[map_lenR-1,map_lenC-1]
+# dir_db=[[0,1],[0,-1],[1,0],[-1,0]]
+#
+# while st>ed:
+#     ed+=1
+#     if dps_loc[ed]==obj_loc:
+#         break
+#
+#     for i in range(4):
+#         lR=dir_db[i][0]+dps_loc[ed][0]
+#         lC=dir_db[i][1]+dps_loc[ed][1]
+#
+#         if lR<0 or lR>=map_lenR or lC<0 or lC>=map_lenC:continue
+#         if map_db[lR][lC]==VAL_BLK or map_chk[lR][lC]==True:continue
+#         st+=1
+#         map_chk[lR][lC]=True
+#         dps_stair.append(dps_stair[ed]+1)
+#         dps_loc.append([])
+#         dps_loc[st].append(lR)
+#         dps_loc[st].append(lC)
+#
+# print(dps_stair[ed])
 
-    heap_last += 1
-    heap_db[heap_last] = x
-    nodLoc_now = heap_last
-    while nodLoc_now>0:
-        nodLoc_pt=get_parentNod(nodLoc_now)
-        if heap_db[nodLoc_pt]<=heap_db[nodLoc_now]:break
-        heap_db[nodLoc_pt],heap_db[nodLoc_now]=heap_db[nodLoc_now],heap_db[nodLoc_pt]
-        nodLoc_now=nodLoc_pt
+
+# #11279
+# import sys
+# heap_size=int(sys.stdin.readline())
+# heap_db=[0 for i in range(131072)]
+# heap_last=-1
+#
+# def get_parentNod(x):
+#     return int((x-1)/2)
+# def get_childNod(x):
+#     return x*2+1,x*2+2
+# def get_minNod(L,R):
+#     global heap_db
+#
+#     if heap_db[L] <= heap_db[R]: return R
+#     else: return L
+#
+# for t in range(heap_size):
+#     x=int(sys.stdin.readline())
+#
+#     if x==0:
+#         if heap_last==-1: print(0)
+#         else:
+#             print(heap_db[0])
+#             heap_db[0]=0
+#             heap_db[0], heap_db[heap_last] = heap_db[heap_last], heap_db[0]
+#             nodLoc_now=0
+#             heap_last -= 1
+#             while True:
+#                 nodLoc_lt, nodLoc_rt = get_childNod(nodLoc_now)
+#
+#                 if nodLoc_lt>heap_last:break
+#                 nodLoc_goto=get_minNod(nodLoc_lt,nodLoc_rt)
+#                 if heap_db[nodLoc_now]>=heap_db[nodLoc_goto]:break
+#
+#                 heap_db[nodLoc_now],heap_db[nodLoc_goto]=heap_db[nodLoc_goto],heap_db[nodLoc_now]
+#                 nodLoc_now=nodLoc_goto
+#         continue
+#
+#     heap_last += 1
+#     heap_db[heap_last] = x
+#     nodLoc_now = heap_last
+#     while nodLoc_now>0:
+#         nodLoc_pt=get_parentNod(nodLoc_now)
+#         if heap_db[nodLoc_pt]>=heap_db[nodLoc_now]:break
+#         heap_db[nodLoc_pt],heap_db[nodLoc_now]=heap_db[nodLoc_now],heap_db[nodLoc_pt]
+#         nodLoc_now=nodLoc_pt
+
+# #1992
+# import sys
+# map_size=int(sys.stdin.readline())
+# map_db=[list(sys.stdin.readline().rstrip()) for _ in range(map_size)]
+# ans_str=[]
+#
+# def chk_equal(row,col,size):
+#     global map_db
+#     val_chk=map_db[row][col]
+#     for i in range(row,row+size):
+#         for j in range(col,col+size):
+#             if map_db[i][j]!=val_chk:return False
+#     return True
+#
+# def searching(row,col,size):
+#     global map_db
+#
+#     if chk_equal(row,col,size):
+#         ans_str.append(map_db[row][col])
+#         return
+#
+#     size_chg=int(size/2)
+#
+#     ans_str.append('(')
+#     searching(row, col, size_chg)
+#     searching(row, col+size_chg, size_chg)
+#     searching(row+size_chg, col, size_chg)
+#     searching(row+size_chg, col+size_chg, size_chg)
+#     ans_str.append(')')
+#
+# searching(0,0,map_size)
+#
+# for x in ans_str:print(x,end='')
+
+# #1931
+# import sys
+# conf_len=int(sys.stdin.readline())
+# conf_db=[[0,0,0] for _ in range(conf_len)]
+# for i in range(conf_len):
+#     conf_st,conf_ed=map(int,sys.stdin.readline().split())
+#     conf_db[i]=[conf_ed-conf_st,conf_st,conf_ed]
+# conf_db = sorted(conf_db,key=lambda x:x[0])
+# conf_db = sorted(conf_db,key=lambda x:x[1])
+# conf_chk=[0]
+#
+# for i in range(1,conf_len):
+#     loc_len=len(conf_chk)-1
+#     loc_last=conf_chk[loc_len]
+#     if conf_db[loc_last][2]<=conf_db[i][1]:
+#         conf_chk.append(i)
+#         continue
+#     if conf_db[i][0]<conf_db[loc_last][0] and conf_db[i][2]<=conf_db[loc_last][2]:conf_chk[loc_len]=i
+#
+# print(len(conf_chk))
+
+# #1927
+# import sys
+# heap_size=int(sys.stdin.readline())
+# heap_db=[0 for i in range(131072)]
+# heap_last=-1
+#
+# def get_parentNod(x):
+#     return int((x-1)/2)
+# def get_childNod(x):
+#     return x*2+1,x*2+2
+# def get_minNod(L,R):
+#     global heap_db
+#
+#     if heap_db[R] == 0: return L
+#     elif heap_db[L] == 0: return R
+#     elif heap_db[L] <= heap_db[R]: return L
+#     else: return R
+#
+# for t in range(heap_size):
+#     x=int(sys.stdin.readline())
+#
+#     if x==0:
+#         if heap_last==-1: print(0)
+#         else:
+#             print(heap_db[0])
+#             heap_db[0]=0
+#             heap_db[0], heap_db[heap_last] = heap_db[heap_last], heap_db[0]
+#             nodLoc_now=0
+#             heap_last -= 1
+#             while True:
+#                 nodLoc_lt, nodLoc_rt = get_childNod(nodLoc_now)
+#
+#                 if nodLoc_lt>heap_last:break
+#                 nodLoc_goto=get_minNod(nodLoc_lt,nodLoc_rt)
+#                 if heap_db[nodLoc_now]<=heap_db[nodLoc_goto]:break
+#
+#                 heap_db[nodLoc_now],heap_db[nodLoc_goto]=heap_db[nodLoc_goto],heap_db[nodLoc_now]
+#                 nodLoc_now=nodLoc_goto
+#         continue
+#
+#     heap_last += 1
+#     heap_db[heap_last] = x
+#     nodLoc_now = heap_last
+#     while nodLoc_now>0:
+#         nodLoc_pt=get_parentNod(nodLoc_now)
+#         if heap_db[nodLoc_pt]<=heap_db[nodLoc_now]:break
+#         heap_db[nodLoc_pt],heap_db[nodLoc_now]=heap_db[nodLoc_now],heap_db[nodLoc_pt]
+#         nodLoc_now=nodLoc_pt
 
 # #1780
 # import sys
